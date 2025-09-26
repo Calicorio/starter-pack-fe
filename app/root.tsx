@@ -6,8 +6,9 @@ import {
   Scripts,
   ScrollRestoration
 } from "react-router";
-
 import type { Route } from "./+types/root";
+import { ErrorBoundaryComponent } from "./components/ErrorBoundary";
+import type { ResultStatusType } from "antd/es/result"; // <-- Add this import
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -45,30 +46,29 @@ export default function App() {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = "Oops!";
-  let details = "An unexpected error occurred.";
+  let status: ResultStatusType = "error";
+  let title = "Oops!";
+  let subTitle = "An unexpected error occurred.";
   let stack: string | undefined;
 
   if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? "404" : "Error";
-    details =
+    status = error.status === 404 ? "404" : "error";
+    title = error.status === 404 ? "404" : "Error";
+    subTitle =
       error.status === 404
         ? "The requested page could not be found."
-        : error.statusText || details;
+        : error.statusText || subTitle;
   } else if (import.meta.env.DEV && error && error instanceof Error) {
-    details = error.message;
+    subTitle = error.message;
     stack = error.stack;
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
-          <code>{stack}</code>
-        </pre>
-      )}
-    </main>
+    <ErrorBoundaryComponent
+      status={status}
+      title={title}
+      subTitle={subTitle}
+      stack={stack}
+    />
   );
 }

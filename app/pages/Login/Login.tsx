@@ -1,15 +1,38 @@
 import "../../i18n";
 
-import { Form, Input, Button, Checkbox, Typography } from "antd";
+import { Form, Input, Button, Checkbox, Typography, Alert } from "antd";
 import type React from "react";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 export const Login: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("login");
+  const [message, setMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const onFinish = (values: any) => {
-    // Handle login logic here
-    console.log("Success:", values);
+  const handleLogin = (values: { username: string; password: string }) => {
+    setLoading(true);
+    setMessage(null);
+
+    fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: values.username,
+        password: values.password
+      })
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(t("failed"));
+        return res.json();
+      })
+      .then((data) => {
+        // login(data.token); // Save token in context & localStorage
+        setMessage(t("success"));
+        // Optionally redirect here
+      })
+      .catch((err) => setMessage(err.message))
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -31,34 +54,42 @@ export const Login: React.FC = () => {
         }}
       >
         <Typography.Title level={2} style={{ textAlign: "center" }}>
-          {t("login.title")}
+          {t("title")}
         </Typography.Title>
+        {message && (
+          <Alert
+            style={{ marginBottom: 16 }}
+            message={message}
+            type={message === t("success") ? "success" : "error"}
+            showIcon
+          />
+        )}
         <Form
           name="login"
           initialValues={{ remember: true }}
-          onFinish={onFinish}
+          onFinish={handleLogin}
           layout="vertical"
         >
           <Form.Item
-            label={t("login.username")}
+            label={t("username")}
             name="username"
-            rules={[{ required: true, message: t("login.usernameRequired") }]}
+            rules={[{ required: true, message: t("usernameRequired") }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label={t("login.password")}
+            label={t("password")}
             name="password"
-            rules={[{ required: true, message: t("login.passwordRequired") }]}
+            rules={[{ required: true, message: t("passwordRequired") }]}
           >
             <Input.Password />
           </Form.Item>
           <Form.Item name="remember" valuePropName="checked">
-            <Checkbox>{t("login.rememberMe")}</Checkbox>
+            <Checkbox>{t("rememberMe")}</Checkbox>
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
-              {t("login.submit")}
+            <Button type="primary" htmlType="submit" block loading={loading}>
+              {t("submit")}
             </Button>
           </Form.Item>
         </Form>

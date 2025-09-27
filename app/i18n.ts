@@ -6,7 +6,7 @@ i18n
   .use(HttpBackend)
   .use(initReactI18next)
   .init({
-    lng: "es",
+    lng: "en",
     fallbackLng: "en",
     ns: ["login"], // declare all your namespaces
     defaultNS: "login", // optional: default namespace

@@ -1,0 +1,11 @@
+{
+  "title": "Iniciar sesión",
+  "username": "Usuario",
+  "password": "Contraseña",
+  "submit": "Entrar",
+  "rememberMe": "Recuérdame",
+  "usernameRequired": "¡Por favor, introduce tu usuario!",
+  "passwordRequired": "¡Por favor, introduce tu contraseña!",
+  "failed": "Error de inicio de sesión. Por favor, revisa tus credenciales.",
+  "success": "¡Inicio de sesión exitoso! Redirigiendo..."
+}

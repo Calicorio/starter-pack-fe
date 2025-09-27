@@ -1,33 +1,22 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import HttpBackend from "i18next-http-backend";
 
-const resources = {
-  en: {
-    login: {
-      title: "Login",
-      username: "Username",
-      password: "Password",
-      rememberMe: "Remember me",
-      submit: "Log in",
-      usernameRequired: "Please input your username!",
-      passwordRequired: "Please input your password!",
-      failed: "Login failed. Please check your credentials.",
-      success: "Login successful! Redirecting..."
-    }
-    // You can add more namespaces here, e.g.:
-    // dashboard: { ... }
-  }
-};
-
-i18n.use(initReactI18next).init({
-  resources,
-  lng: "en",
-  fallbackLng: "en",
-  ns: ["login"], // List all your namespaces here
-  defaultNS: "login", // Set the default namespace
-  interpolation: {
-    escapeValue: false
-  }
-});
+i18n
+  .use(HttpBackend)
+  .use(initReactI18next)
+  .init({
+    lng: "es",
+    fallbackLng: "en",
+    ns: ["login"], // declare all your namespaces
+    defaultNS: "login", // optional: default namespace
+    backend: {
+      loadPath: "/locales/{{lng}}/{{ns}}.json" // 👈 language + namespace
+    },
+    interpolation: {
+      escapeValue: false
+    },
+    debug: true
+  });
 
 export default i18n;

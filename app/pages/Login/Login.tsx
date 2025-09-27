@@ -1,9 +1,19 @@
-import "../../i18n";
-
-import { Form, Input, Button, Checkbox, Typography, Alert } from "antd";
-import type React from "react";
+import {
+  Form,
+  Input,
+  Button,
+  Checkbox,
+  Typography,
+  Alert,
+  Select,
+  Layout,
+  Row,
+  Col,
+  Space
+} from "antd";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import i18n from "~/i18n";
 
 export const Login: React.FC = () => {
   const { t } = useTranslation("login");
@@ -36,64 +46,115 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center"
-      }}
-    >
-      <div
+    <Layout style={{ minHeight: "100vh" }}>
+      <Layout.Header
         style={{
-          width: 320,
-          padding: 24,
           background: "#fff",
-          borderRadius: 8,
-          boxShadow: "0 2px 8px #f0f1f2"
+          boxShadow: "0 2px 8px #f0f1f2",
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          padding: "0 24px"
         }}
       >
-        <Typography.Title level={2} style={{ textAlign: "center" }}>
-          {t("title")}
-        </Typography.Title>
-        {message && (
-          <Alert
-            style={{ marginBottom: 16 }}
-            message={message}
-            type={message === t("success") ? "success" : "error"}
-            showIcon
+        <Space>
+          <Select
+            value={i18n.language}
+            onChange={(lng) => i18n.changeLanguage(lng)}
+            style={{ width: 120, background: "#f0f0f0" }}
+            options={[
+              { value: "en", label: "English" },
+              { value: "es", label: "Español" }
+            ]}
+            variant="borderless"
           />
-        )}
-        <Form
-          name="login"
-          initialValues={{ remember: true }}
-          onFinish={handleLogin}
-          layout="vertical"
+        </Space>
+      </Layout.Header>
+      <Layout.Content
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#f5f5f5",
+          minHeight: 0,
+          flex: 1
+        }}
+      >
+        <Row
+          style={{ width: "100%", minHeight: "100vh" }}
+          align="middle"
+          justify="center"
         >
-          <Form.Item
-            label={t("username")}
-            name="username"
-            rules={[{ required: true, message: t("usernameRequired") }]}
+          <Col
+            xs={22}
+            sm={16}
+            md={12}
+            lg={8}
+            xl={6}
+            style={{ display: "flex", justifyContent: "center" }}
           >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label={t("password")}
-            name="password"
-            rules={[{ required: true, message: t("passwordRequired") }]}
-          >
-            <Input.Password />
-          </Form.Item>
-          <Form.Item name="remember" valuePropName="checked">
-            <Checkbox>{t("rememberMe")}</Checkbox>
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" block loading={loading}>
-              {t("submit")}
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
-    </div>
+            <div
+              style={{
+                width: "100%",
+                maxWidth: 400,
+                padding: 32,
+                background: "#fff",
+                borderRadius: 12,
+                boxShadow: "0 2px 8px #f0f1f2"
+              }}
+            >
+              <Typography.Title
+                level={2}
+                style={{ textAlign: "center", marginBottom: 32 }}
+              >
+                {t("title")}
+              </Typography.Title>
+              {message && (
+                <Alert
+                  style={{ marginBottom: 16 }}
+                  message={message}
+                  type={message === t("success") ? "success" : "error"}
+                  showIcon
+                />
+              )}
+              <Form
+                name="login"
+                initialValues={{ remember: true }}
+                onFinish={handleLogin}
+                layout="vertical"
+              >
+                <Form.Item
+                  label={t("username")}
+                  name="username"
+                  rules={[{ required: true, message: t("usernameRequired") }]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  label={t("password")}
+                  name="password"
+                  rules={[{ required: true, message: t("passwordRequired") }]}
+                >
+                  <Input.Password />
+                </Form.Item>
+                <Form.Item name="remember" valuePropName="checked">
+                  <Checkbox>{t("rememberMe")}</Checkbox>
+                </Form.Item>
+                <Form.Item>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    block
+                    loading={loading}
+                  >
+                    {t("submit")}
+                  </Button>
+                </Form.Item>
+              </Form>
+            </div>
+          </Col>
+        </Row>
+      </Layout.Content>
+    </Layout>
   );
 };

@@ -20,7 +20,7 @@ export const ErrorBoundaryComponent: React.FC<ErrorBoundaryComponentProps> = ({
   const navigate = useNavigate();
 
   const handleLoginRedirect = () => {
-    navigate(MAIN);
+    navigate("/login");
   };
 
   return (

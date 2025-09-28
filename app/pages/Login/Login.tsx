@@ -10,13 +10,15 @@ import {
 } from "antd";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { LOGIN_ENDPOINT } from "~/services/AuthenticationService";
+import { useNavigate } from "react-router";
 import { Header } from "~/components/Header";
-import { LOGIN_ENDPOINT } from "~/endpoints/LoginEndpoints";
 
 export const Login: React.FC = () => {
   const { t } = useTranslation("login");
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = (values: { username: string; password: string }) => {
     setLoading(true);
@@ -35,9 +37,14 @@ export const Login: React.FC = () => {
         return res.json();
       })
       .then((data) => {
-        // login(data.token); // Save token in context & localStorage
-        setMessage(t("success"));
-        // Optionally redirect here
+        if (data.token) {
+          // Store token in a secure cookie instead of localStorage
+          document.cookie = `token=${data.token}; path=/; SameSite=Strict`;
+          setMessage(t("success"));
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 500);
+        }
       })
       .catch((err) => setMessage(err.message))
       .finally(() => setLoading(false));

@@ -1,6 +1,5 @@
 import { Result, Button } from "antd";
 import { LoginOutlined } from "@ant-design/icons";
-import type { FC } from "react";
 import type { ResultStatusType } from "antd/es/result";
 import { useNavigate } from "react-router";
 
@@ -12,7 +11,7 @@ interface ErrorBoundaryComponentProps {
   onReload?: () => void;
 }
 
-export const ErrorBoundaryComponent: FC<ErrorBoundaryComponentProps> = ({
+export const ErrorBoundaryComponent: React.FC<ErrorBoundaryComponentProps> = ({
   status = "error",
   title = "Oops!",
   subTitle = "An unexpected error occurred.",
@@ -21,7 +20,7 @@ export const ErrorBoundaryComponent: FC<ErrorBoundaryComponentProps> = ({
   const navigate = useNavigate();
 
   const handleLoginRedirect = () => {
-    navigate("/");
+    navigate(MAIN);
   };
 
   return (

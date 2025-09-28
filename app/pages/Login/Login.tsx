@@ -13,6 +13,7 @@ import { useState } from "react";
 import { LOGIN_ENDPOINT } from "~/services/AuthenticationService";
 import { useNavigate } from "react-router";
 import { Header } from "~/components/Header";
+import { DASHBOARD } from "~/utils/redirections";
 
 export const Login: React.FC = () => {
   const { t } = useTranslation("login");
@@ -42,7 +43,7 @@ export const Login: React.FC = () => {
           document.cookie = `token=${data.token}; path=/; SameSite=Strict`;
           setMessage(t("success"));
           setTimeout(() => {
-            navigate("/dashboard");
+            navigate(DASHBOARD);
           }, 500);
         }
       })

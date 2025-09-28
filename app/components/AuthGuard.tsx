@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { AUTH_VALIDATE_ENDPOINT } from "~/services/AuthenticationService";
+import { MAIN } from "~/utils/redirections";
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -17,7 +18,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       ?.split("=")[1];
 
     if (!token) {
-      navigate("/"); // redirect to login if no token
+      navigate(MAIN); // redirect to login if no token
       return;
     }
 
@@ -31,7 +32,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       })
       .then(() => setLoading(false))
       .catch(() => {
-        navigate("/"); // invalid token → login
+        navigate(MAIN); // invalid token → login
       });
   }, [navigate]);
 

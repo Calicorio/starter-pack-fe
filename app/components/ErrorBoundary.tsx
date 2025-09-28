@@ -2,6 +2,7 @@ import { Result, Button } from "antd";
 import { LoginOutlined } from "@ant-design/icons";
 import type { ResultStatusType } from "antd/es/result";
 import { useNavigate } from "react-router";
+import { MAIN } from "~/utils/redirections";
 
 interface ErrorBoundaryComponentProps {
   status?: ResultStatusType;
@@ -20,7 +21,7 @@ export const ErrorBoundaryComponent: React.FC<ErrorBoundaryComponentProps> = ({
   const navigate = useNavigate();
 
   const handleLoginRedirect = () => {
-    navigate("/login");
+    navigate(MAIN);
   };
 
   return (

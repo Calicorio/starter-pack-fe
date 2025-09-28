@@ -1,4 +1,5 @@
 import { AuthGuard } from "~/components/AuthGuard";
+import { Dashboard } from "~/pages/Dashboard/Dashboard";
 
 export function meta() {
   return [
@@ -10,7 +11,7 @@ export function meta() {
 export default function DashboardRoute() {
   return (
     <AuthGuard>
-      <div>Welcome to your dashboard!</div>
+      <Dashboard />
     </AuthGuard>
   );
 }

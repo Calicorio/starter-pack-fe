@@ -11,6 +11,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { Header } from "~/components/Header";
+import { LOGIN_ENDPOINT } from "~/endpoints/LoginEndpoints";
 
 export const Login: React.FC = () => {
   const { t } = useTranslation("login");
@@ -21,7 +22,7 @@ export const Login: React.FC = () => {
     setLoading(true);
     setMessage(null);
 
-    fetch("/api/auth/login", {
+    fetch(LOGIN_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

@@ -6,7 +6,8 @@ import {
   Typography,
   Alert,
   Row,
-  Col
+  Col,
+  notification
 } from "antd";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
@@ -23,12 +24,11 @@ export const Login: React.FC = () => {
 
   const handleLogin = (values: { username: string; password: string }) => {
     setLoading(true);
-    setMessage(null);
 
     fetch(LOGIN_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials: "include", // ✅ allow browser to store HttpOnly cookie
+      credentials: "include",
       body: JSON.stringify({
         email: values.username,
         password: values.password
@@ -39,12 +39,20 @@ export const Login: React.FC = () => {
         return res.json();
       })
       .then(() => {
-        setMessage(t("success"));
-        setTimeout(() => {
-          navigate(DASHBOARD);
-        }, 500);
+        notification.success({
+          message: t("success"),
+          description: t("loginSuccessMessage"),
+          placement: "topRight"
+        });
+        navigate(DASHBOARD);
       })
-      .catch((err) => setMessage(err.message))
+      .catch((err) => {
+        notification.error({
+          message: t("failed"),
+          description: err.message || t("loginFailedMessage"),
+          placement: "topRight"
+        });
+      })
       .finally(() => setLoading(false));
   };
 

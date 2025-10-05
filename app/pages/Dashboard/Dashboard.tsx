@@ -1,5 +1,5 @@
 import { LOGOUT_ENDPOINT } from "~/services/LogoutService";
-import { Button } from "antd";
+import { Button, notification } from "antd";
 import { useNavigate } from "react-router";
 import { MAIN } from "~/utils/redirections";
 
@@ -8,12 +8,31 @@ export const Dashboard: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      await fetch(LOGOUT_ENDPOINT, {
+      const res = await fetch(LOGOUT_ENDPOINT, {
         method: "POST",
         credentials: "include" // ✅ clear cookie via backend
       });
-      navigate(MAIN);
+
+      if (res.ok) {
+        notification.success({
+          message: "Logged out",
+          description: "You have been successfully logged out.",
+          placement: "topRight"
+        });
+      } else {
+        notification.warning({
+          message: "Logout failed",
+          description: "Unable to log you out. Please try again.",
+          placement: "topRight"
+        });
+      }
     } catch {
+      notification.error({
+        message: "Error",
+        description: "An unexpected error occurred during logout.",
+        placement: "topRight"
+      });
+    } finally {
       navigate(MAIN);
     }
   };

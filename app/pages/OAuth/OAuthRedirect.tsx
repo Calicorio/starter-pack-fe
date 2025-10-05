@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { DASHBOARD, MAIN } from "~/utils/redirections";
-import { Row, Col, Card, Spin, Typography } from "antd";
+import { Row, Col, Card, Spin, Typography, notification } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Header } from "~/components/Header";
 import { AUTH_VALIDATE_ENDPOINT } from "~/services/AuthenticationService";
@@ -20,11 +20,26 @@ export const OAuthRedirect: React.FC = () => {
       });
 
       if (res.ok) {
+        notification.success({
+          message: "Logged in",
+          description: "You have successfully logged in via Google.",
+          placement: "topRight"
+        });
         navigate(DASHBOARD);
       } else {
+        notification.warning({
+          message: "Login failed",
+          description: "Unable to log in. Please try again.",
+          placement: "topRight"
+        });
         navigate(MAIN);
       }
-    } catch {
+    } catch (err) {
+      notification.error({
+        message: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        placement: "topRight"
+      });
       navigate(MAIN);
     }
   };

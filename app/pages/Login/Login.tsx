@@ -9,9 +9,9 @@ import {
   Col
 } from "antd";
 import { useTranslation } from "react-i18next";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { LOGIN_ENDPOINT } from "~/services/AuthenticationService";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate } from "react-router";
 import { Header } from "~/components/Header";
 import { DASHBOARD } from "~/utils/redirections";
 
@@ -20,21 +20,6 @@ export const Login: React.FC = () => {
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // Handle Google redirect with token in query string
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const token = params.get("token");
-
-    if (token) {
-      // Save token in cookie
-      document.cookie = `token=${token}; path=/; SameSite=Strict`;
-
-      // Redirect to dashboard
-      navigate(DASHBOARD, { replace: true });
-    }
-  }, [location, navigate]);
 
   const handleLogin = (values: { username: string; password: string }) => {
     setLoading(true);
@@ -43,6 +28,7 @@ export const Login: React.FC = () => {
     fetch(LOGIN_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include", // ✅ allow browser to store HttpOnly cookie
       body: JSON.stringify({
         email: values.username,
         password: values.password
@@ -52,15 +38,11 @@ export const Login: React.FC = () => {
         if (!res.ok) throw new Error(t("failed"));
         return res.json();
       })
-      .then((data) => {
-        if (data.token) {
-          // Store token in cookie
-          document.cookie = `token=${data.token}; path=/; SameSite=Strict`;
-          setMessage(t("success"));
-          setTimeout(() => {
-            navigate(DASHBOARD);
-          }, 500);
-        }
+      .then(() => {
+        setMessage(t("success"));
+        setTimeout(() => {
+          navigate(DASHBOARD);
+        }, 500);
       })
       .catch((err) => setMessage(err.message))
       .finally(() => setLoading(false));
@@ -150,7 +132,7 @@ export const Login: React.FC = () => {
                     />
                   }
                   onClick={() =>
-                    (window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`)
+                    (window.location.href = `${import.meta.env.VITE_BACKEND_URL}/auth/google`)
                   }
                 >
                   Sign in with Google

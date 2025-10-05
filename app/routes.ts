@@ -2,5 +2,6 @@ import { type RouteConfig, index, route } from "@react-router/dev/routes";
 
 export default [
   index("routes/LoginRoute.tsx"),
-  route("dashboard", "routes/DashboardRoute.tsx")
+  route("dashboard", "routes/DashboardRoute.tsx"),
+  route("oauth-redirect", "routes/OAuthRedirectRoute.tsx")
 ] satisfies RouteConfig;

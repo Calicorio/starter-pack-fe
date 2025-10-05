@@ -1,20 +1,20 @@
 import { LOGOUT_ENDPOINT } from "~/services/LogoutService";
 import { Button } from "antd";
 import { useNavigate } from "react-router";
+import { MAIN } from "~/utils/redirections";
 
 export const Dashboard: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await fetch(LOGOUT_ENDPOINT, { method: "POST", credentials: "include" });
-      // Remove token cookie
-      document.cookie =
-        "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;";
-      navigate("/");
-    } catch (err) {
-      // Optionally handle error
-      navigate("/");
+      await fetch(LOGOUT_ENDPOINT, {
+        method: "POST",
+        credentials: "include" // ✅ clear cookie via backend
+      });
+      navigate(MAIN);
+    } catch {
+      navigate(MAIN);
     }
   };
 

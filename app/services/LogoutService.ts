@@ -1,1 +1,1 @@
-export const LOGOUT_ENDPOINT = `${import.meta.env.VITE_API_BASE_URL}/auth/logout`;
+export const LOGOUT_ENDPOINT = `${import.meta.env.VITE_BACKEND_URL}/auth/logout`;

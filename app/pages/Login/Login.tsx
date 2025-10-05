@@ -15,6 +15,7 @@ import { LOGIN_ENDPOINT } from "~/services/AuthenticationService";
 import { useNavigate } from "react-router";
 import { Header } from "~/components/Header";
 import { DASHBOARD } from "~/utils/redirections";
+import { GoogleOutlined } from "@ant-design/icons";
 
 export const Login: React.FC = () => {
   const { t } = useTranslation("login");
@@ -133,11 +134,7 @@ export const Login: React.FC = () => {
                   type="default"
                   block
                   icon={
-                    <img
-                      src="/google-icon.svg"
-                      alt="Google"
-                      style={{ width: 20, marginRight: 8 }}
-                    />
+                    <GoogleOutlined style={{ fontSize: 18, marginRight: 8 }} />
                   }
                   onClick={() =>
                     (window.location.href = `${import.meta.env.VITE_BACKEND_URL}/auth/google`)

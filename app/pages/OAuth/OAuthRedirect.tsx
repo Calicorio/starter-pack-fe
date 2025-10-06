@@ -5,11 +5,13 @@ import { Row, Col, Card, Spin, Typography, notification } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Header } from "~/components/Header";
 import { AUTH_VALIDATE_ENDPOINT } from "~/services/AuthenticationService";
+import { useAuthStore } from "~/store/useAuthStore";
 
 const { Text } = Typography;
 
 export const OAuthRedirect: React.FC = () => {
   const navigate = useNavigate();
+  const setUser = useAuthStore((state) => state.setUser);
 
   // ✅ Function declared outside of useEffect
   const checkAuth = async () => {
@@ -34,7 +36,7 @@ export const OAuthRedirect: React.FC = () => {
         });
         navigate(MAIN);
       }
-    } catch (err) {
+    } catch {
       notification.error({
         message: "Error",
         description: "An unexpected error occurred. Please try again.",

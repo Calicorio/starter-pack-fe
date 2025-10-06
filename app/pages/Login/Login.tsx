@@ -16,10 +16,11 @@ import { useNavigate } from "react-router";
 import { Header } from "~/components/Header";
 import { DASHBOARD } from "~/utils/redirections";
 import { GoogleOutlined } from "@ant-design/icons";
+import { useAuthStore } from "~/store/useAuthStore";
 
 export const Login: React.FC = () => {
   const { t } = useTranslation("login");
-  const [message, setMessage] = useState<string | null>(null);
+  const setUser = useAuthStore((state) => state.setUser);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -39,7 +40,8 @@ export const Login: React.FC = () => {
         if (!res.ok) throw new Error(t("failed"));
         return res.json();
       })
-      .then(() => {
+      .then((data) => {
+        setUser(data);
         notification.success({
           message: t("success"),
           description: t("loginSuccessMessage"),
@@ -88,14 +90,6 @@ export const Login: React.FC = () => {
             >
               {t("title")}
             </Typography.Title>
-            {message && (
-              <Alert
-                style={{ marginBottom: 16 }}
-                message={message}
-                type={message === t("success") ? "success" : "error"}
-                showIcon
-              />
-            )}
             <Form
               name="login"
               initialValues={{ remember: true }}

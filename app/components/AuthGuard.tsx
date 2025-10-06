@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { AUTH_VALIDATE_ENDPOINT } from "~/services/AuthenticationService";
 import { MAIN } from "~/utils/redirections";
+import { useAuthStore } from "~/store/useAuthStore";
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -11,6 +12,8 @@ interface AuthGuardProps {
 export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const setUser = useAuthStore((state) => state.setUser);
+  const clearUser = useAuthStore((state) => state.clearUser);
 
   useEffect(() => {
     fetch(AUTH_VALIDATE_ENDPOINT, { method: "GET", credentials: "include" })
@@ -18,8 +21,11 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
         if (!res.ok) throw new Error("Session expired");
         return res.json();
       })
-      .then(() => setLoading(false))
+      .then((data) => {
+        setLoading(false);
+      })
       .catch(() => {
+        clearUser();
         notification.warning({
           message: "Session Expired",
           description: "Your session has expired. Please log in again.",
@@ -27,11 +33,9 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
         });
         navigate(MAIN);
       });
-  }, [navigate]);
+  }, [navigate, setUser, clearUser]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  if (loading) return <div>Loading...</div>;
 
   return <>{children}</>;
 };

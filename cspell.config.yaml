@@ -1,0 +1,28 @@
+version: "0.2"
+language: en
+ignorePaths:
+  - node_modules
+  - dist
+  - build
+  - .git
+  - .vscode
+  - .idea
+  - package-lock.json
+  - pnpm-lock.yaml
+includeRegExpList:
+  - .*
+files:
+  - app/**/*.{ts,tsx,js,jsx,html,md}
+dictionaries:
+  - en_US
+ignoreWords:
+  - antd
+  - vite
+  - jsx
+  - tsx
+  - router
+  - i18n
+  - oauth
+words:
+  - Español
+  - redirections

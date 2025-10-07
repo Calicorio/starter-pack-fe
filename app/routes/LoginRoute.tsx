@@ -1,7 +1,6 @@
 import { Login } from "~/pages/Login/Login";
-import type { Route } from "../+types/root";
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
   return [
     { title: "Login" },
     { name: "description", content: "Welcome to StarterPack!" }

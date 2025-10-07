@@ -22,11 +22,15 @@ export const OAuthRedirect: React.FC = () => {
       });
 
       if (res.ok) {
+        const data = await res.json(); // assuming the endpoint returns the user object
+        setUser(data); // ✅ set the user in Zustand
+
         notification.success({
           message: "Logged in",
           description: "You have successfully logged in via Google.",
           placement: "topRight"
         });
+
         navigate(DASHBOARD);
       } else {
         notification.warning({
@@ -36,7 +40,8 @@ export const OAuthRedirect: React.FC = () => {
         });
         navigate(MAIN);
       }
-    } catch {
+    } catch (error) {
+      console.error(error);
       notification.error({
         message: "Error",
         description: "An unexpected error occurred. Please try again.",

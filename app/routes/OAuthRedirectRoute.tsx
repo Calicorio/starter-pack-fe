@@ -1,7 +1,6 @@
 import { OAuthRedirect } from "~/pages/OAuth/OAuthRedirect";
-import type { Route } from "../+types/root";
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
   return [
     { title: "OAuth Redirect" },
     {

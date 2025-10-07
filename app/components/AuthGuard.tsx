@@ -21,7 +21,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
         if (!res.ok) throw new Error("Session expired");
         return res.json();
       })
-      .then((data) => {
+      .then(() => {
         setLoading(false);
       })
       .catch(() => {
